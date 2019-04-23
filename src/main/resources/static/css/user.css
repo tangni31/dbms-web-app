@@ -1,0 +1,40 @@
+h2 {
+  color: #d32323;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.container {
+  margin: 3% 15%;
+}
+
+.user-line {
+  list-style-type: none;
+}
+
+.user-name {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.category {
+  color: #0073bb;
+}
+
+.useful {
+  color: #666;
+}
+
+.address {
+  color: #888;
+}
+
+.other-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.link {
+  text-align: left;
+}

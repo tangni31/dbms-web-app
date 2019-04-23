@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>Weclome!</title>
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/business.css}">
+
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <section class="nav-bar">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" th:href="@{/}">Yelp</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+
+
+          <li class="nav-item active">
+            <div class="" th:if="${session.user==null}">
+              <a class="nav-link" th:href="@{/user/signup}">Customer sign up<span class="sr-only">(current)</span></a>
+            </div>
+          </li>
+
+          <li class="nav-item active">
+            <div class="" th:if="${session.user==null}">
+              <a class="nav-link" th:href="@{/business/signup}">Business sign up<span class="sr-only">(current)</span></a>
+            </div>
+          </li>
+
+          <li class="nav-item active">
+            <div class="" th:unless="${session.user==null}">
+              <a class="nav-link" th:href="@{/user/homepage}" th:if="${session.isBusiness==0}"><span th:text="${session.user.name}"></span><span class="sr-only">(current)</span></a>
+              <a class="nav-link" th:href="@{/business/homepage}" th:if="${session.isBusiness==1}"><span th:text="${session.user.name}"></span><span class="sr-only">(current)</span></a>
+              <a class="nav-link" th:href="@{/admin/homepage}" th:if="${session.isBusiness==2}"><span th:text="${session.user.name}"></span><span class="sr-only">(current)</span></a>
+
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/login}" th:if="${session.user==null} ">Sign in <span class="sr-only">(current)</span></a>
+            <a class="nav-link" th:href="@{/signout}" th:unless="${session.user==null}">Sign out <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </section>
+
+
+  <section class="business-section">
+
+    <div class="container">
+      <h1 th:if="${isHomepage==true}" th:text=" 'Welcome ' + ${business.name} + '!'"></h1>
+      <ul class="business-ul" th:object="${business}">
+
+        <li class="business-li">
+          <div class="row">
+            <p class="business-name col-md-12" th:text="*{name}"></p>
+            <div class="info col-md-6">
+              <p class="category" th:text="*{category}"></p>
+              <p th:text="'Stars: ' + *{star}"></p>
+              <p th:text="'Address: ' + *{address}"></p>
+              <p th:text="*{city}"></p>
+              <p th:text="*{state}"></p>
+            </div>
+
+            <div class="more-info col-md-6">
+              <p class="more-info-label">More business info</p>
+              <p><i class="fas fa-tv"></i><span th:text="' TV: ' + *{hasTV}" /></p>
+              <p><i class='fas fa-wifi'></i><span th:text="' Wifi: ' + *{wifi}" /></p>
+              <p><i class="fas fa-child"></i><span th:text="' Good for Kids: ' + *{goodForKids}" /></p>
+              <p><i class="fas fa-dollar-sign"></i><span th:text="' Price range: ' + *{priceRange}" /></p>
+            </div>
+          </div>
+        </li>
+
+        <a th:if="${isHomepage==false}" th:href="@{/review(bid=${business.bid})}" class="review-btn btn btn-info btn-sm">
+          <span th:text="'Write a Review'"></span>
+        </a>
+    </div>
+  </section>
+
+
+  <section class="review-section">
+
+    <div class="container">
+      <p class="review-title" th:text="'Reviews for ' + ${business.name}"></p>
+      <ul class="business-ul" th:each="r : ${reviews}">
+        <li class="business-li">
+          <div class="row">
+            <div class="reviewer  col-md-3">
+              <a th:href="@{/user/(uid=${r.key.uid})}" class="btn btn-link">
+                <p class="user-name" th:text="${r.key.name}"></p>
+              </a>
+              <p><i class="fas fa-user-friends"></i><span th:text="' Friends: ' + ${r.key.fans}" /></p>
+              <p><i class="fas fa-star"></i><span th:text="' Reviews: ' + ${r.key.reviewCount}" /></p>
+            </div>
+
+            <div class="review-content col-md-6">
+              <div class="row">
+                <div class="row col-md-12">
+                  <p class="col-md-3 review-line1" th:text="'Rate: ' + ${r.value.star}"></p>
+                  <p class="col-md-6 review-line1" th:text="${r.value.date}"></p>
+                </div>
+                <p class="col-md-12" th:text="${r.value.text}"></p>
+                <div class="review-3 col-md-12 row">
+                  <p class="col-md-3" th:text="'useful ' + ${r.value.useful}"></p>
+                  <p class="col-md-3" th:text="'funny ' + ${r.value.funny}"></p>
+                  <p class="col-md-3" th:text="'cool ' + ${r.value.cool}"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </li>
+      </ul>
+    </div>
+
+  </section>
+
+
+</body>
+
+</html>

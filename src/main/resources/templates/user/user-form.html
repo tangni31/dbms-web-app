@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>Update</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+</head>
+  <body>
+
+    <div class="container">
+        <h3>My info</h3>
+        <hr>
+
+        <p class="h4 mb-4">Update My Info</p>
+
+        <form action="#" th:action="@{/user/save}" th:object="${user}" method="POST">
+          <!-- hidden form field to handle update -->
+          <input type="hidden" th:field="*{uid}">
+          <input type="text" th:field="*{name}" class="form-control mb-4 col-4" placeholder="name">
+          <button type="submit" class="btn btn-info col-2">Save</button>
+        </form>
+
+        <hr>
+
+        <a th:href="@{/user/homepage}">Back to Homepage</a>
+      </div>
+
+
+  </body>
+</html>

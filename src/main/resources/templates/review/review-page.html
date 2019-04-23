@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>Result</title>
+  <link rel="stylesheet" th:href="@{/css/review.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+
+
+<body>
+
+
+
+  <div class="container">
+    <p class="head" th:text=" 'Write a Review for ' + ${business.name} "></p>
+    <form class="form-review" th:action="@{/business/review/save(bid=${business.bid})}" th:object="${review}" method="post">
+      <label for="SelectRate">Select your rating</label>
+
+      <select class="form-control col-md-3" id="SelectRate" th:field="${review.star}" th:value="${review.star}">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+
+      <div class="form-group">
+        <textarea class="form-control" id="reviewTextarea" th:field="${review.text}" th:value="${review.text}" rows="6" placeholder="Your review helps others learn about great businesses."></textarea>
+      </div>
+
+      <button class="btn btn-lg col-md-3 btn-danger btn-block" type="submit">Post Review</button>
+
+    </form>
+  </div>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>Weclome!</title>
+  <link rel="stylesheet" th:href="@{/css/sign-in.css}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+
+
+<body>
+
+
+
+    <form class="form-signin" th:action="@{/login/redirct}" th:object="${message}" method="post">
+
+      <img class="mb-4" th:src="@{/img/yelp.png}" alt="" width="102" height="65">
+      <h1 class="h3 mb-3 font-weight-normal">Login to Yelp</h1>
+      <label for="uid" class="sr-only">User Id</label>
+      <input type="text" name="id" th:field="*{id}" class="form-control" placeholder="User Id" required autofocus>
+      <label for="password" class="sr-only">Password</label>
+      <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="Password" required>
+
+      <div class="checkbox mb-3">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Type</label>
+          </div>
+          <select th:field="${message.type}" th:value="${message.type}" class="custom-select" id="inputGroupSelect01">
+            <option value="" selected>Please Choose User Type</option>
+            <option th:selected="${message.type=='business'}" value="business">Business Provider</option>
+            <option th:selected="${message.type=='user'}" value="user">Customer</option>
+            <option th:selected="${message.type=='admin'}" value="admin">Admin</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+      <div class="alert alert-danger" role="alert" th:if="${result}">
+        <span th:text="${result} + ', please try again'"></span>
+</div>
+    </form>
+
+
+
+
+
+  </body>
+</html>

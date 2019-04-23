@@ -1,0 +1,43 @@
+.container {
+  margin: 3% 15%;
+}
+
+.business-ul .business-li {
+  list-style-type: none;
+}
+
+.business-name {
+  font-size: 3rem;
+  font-weight: bold;
+  padding: 0;
+}
+
+.category {
+  font-size: 1.5rem;
+  color: #0073bb;
+}
+
+.more-info-label {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #d32323;
+}
+
+
+.review-title {
+  color: #d32323;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.user-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+
+.review-btn {
+  background-color: #d32323;
+  border-color: #d32323;
+}

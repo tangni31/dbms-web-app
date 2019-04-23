@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>Weclome!</title>
+  <!-- css -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" th:href="@{/css/user.css}">
+
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+  <section class="nav-bar">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" th:href="@{/}">Yelp</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" th:href="@{/user/homepage}"><span th:text="${user.name}"></span> <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/signout">Sign out <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </section>
+
+
+  <section class="user-info">
+    <h1 th:if="${isHomepage==true}" th:text=" 'Welcome ' + ${user.name} + '!'"></h1>
+    <div class="container user-info">
+      <ul class="user-line" th:object="${user}">
+        <li class="user-line">
+          <p class="user-name" th:text="*{name}"></p>
+          <p th:text="'id: ' + *{uid}"></p>
+          <p th:text="'Registration time:' + *{registrationTime}"></p>
+          <div class="row">
+            <p class="col-md-2"><i class="fas fa-user-friends"></i><span th:text="' Friends: ' +  *{fans}" /></p>
+            <p class="col-md-2"><i class="fas fa-star"></i><span th:text="' Reviews: ' + *{reviewCount}" /></p>
+          </div>
+          <div class="row">
+            <p class="useful col-md-2" th:text="'useful: ' + *{useful}"></p>
+            <p class="useful col-md-2" th:text="'funny: ' + *{funny}"></p>
+            <p class="useful col-md-2" th:text="'cool: ' + *{cool}"></p>
+          </div>
+          <p>
+            <a th:if="${isHomepage==true}" th:href="@{/user/showFormForUpdate(uid=${user.uid})}" class="btn btn-info btn-sm">
+              Update My Information
+            </a>
+          </p>
+    </div>
+    </li>
+    </ul>
+    </div>
+    <hr>
+
+  </section>
+
+
+  <section class="firends">
+
+    <div class="container">
+      <h2>Friends</h2>
+      <ul class="user-line" th:each="f : ${friends}">
+        <li class="user-line">
+          <a th:href="@{/user/(uid=${f.uid})}" class="btn btn-link link">
+            <p class="other-name" th:text="${f.name}"></p>
+          </a>
+          <p><i class="fas fa-user-friends"></i><span th:text="' Friends: ' +  ${f.fans}" /></p>
+          <p><i class="fas fa-star"></i><span th:text="' Reviews: ' + ${f.reviewCount}" /></p>
+        </li>
+        <hr>
+      </ul>
+    </div>
+  </section>
+
+
+  <section class="reviews">
+
+    <div class="container">
+      <h2>Reviews</h2>
+      <ul class="user-line" th:each="r : ${reviews}">
+        <a th:href="@{/business/(bid=${r.key.bid})}" class="btn btn-link link">
+          <p class="other-name" th:text="${r.key.name}"></p>
+        </a>
+        <p class="category" th:text="${r.key.category}"></p>
+        <p class="address" th:text="${r.key.address}"></p>
+        <p class="address" th:text="${r.key.city} + ', ' + ${r.key.state}"></p>
+        <p th:text="'Rate: ' + ${r.value.star}"></p>
+        <p th:text="${r.value.date}"></p>
+        <p th:text="${r.value.text}"></p>
+        <div class="row">
+          <p class="useful col-md-3" th:text="'useful:' + ${r.value.useful}"></p>
+          <p class="useful col-md-3" th:text="'funny:' + ${r.value.funny}"></p>
+          <p class="useful col-md-3" th:text="'cool:' + ${r.value.cool}"></p>
+        </div>
+        <hr>
+      </ul>
+    </div>
+  </section>

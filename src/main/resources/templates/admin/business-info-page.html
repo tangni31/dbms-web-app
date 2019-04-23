@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js}"></script>
+
+<head>
+  <meta charset="utf-8">
+  <title>homepage</title>
+  <style>
+    .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+      </style>
+  <!-- Custom styles for this template -->
+  <link href="/css/dashboard.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" th:href="@{/}">Yelp</a>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" th:href="@{/signout}">Sign out</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/admin/homepage}">
+                <span data-feather="home"></span>
+                Home <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/admin/website_info/(type=user,year=all)}">
+                <span data-feather="users"></span>
+                User Info
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/admin/business_info/(category=all,location=all,year=all,content=review)}">
+                <span data-feather="shopping-cart"></span>
+                Business Info
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/admin/website_info/(type=review,year=all)}">
+                <span data-feather="bar-chart-2"></span>
+                Reviews
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/admin/website_info/(type=active_user,year=all)}">
+                <span data-feather="file"></span>
+                Active User
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">
+            <p th:text="${message}"></p>
+          </h1>
+        </div>
+
+
+        <form class="form-search" th:action="@{/admin/business_info(category=${business.category},
+            location=${business.location}, year=${business.year}, content=${business.content})}" method="get">
+
+          <div class="form-row align-items-center">
+            <div class="col-auto my-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Category</div>
+                </div>
+                <input type="text" th:field="${business.category}" class="form-control" id="inlineFormInputName" placeholder="Input a category" required>
+              </div>
+
+
+            </div>
+            <div class="col-auto my-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Location</div>
+                </div>
+                <input type="text" th:field="${business.location}" class="form-control" id="inlineFormInputGroupUsername" placeholder="City, State" required>
+              </div>
+            </div>
+
+
+            <!-- <div class="col-auto my-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Year</div>
+                </div>
+                <input type="text" th:field="${business.year}" class="form-control" id="inlineFormInputGroupUsername" placeholder="Year(2005-2018)" required>
+              </div>
+            </div> -->
+
+
+            <div class="col-auto my-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Year</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" th:field="${business.year}">
+                  <option selected value="">Choose...</option>
+                  <option th:selected="${business.year=='all'}" value="all">All</option>
+                  <option th:selected="${business.year=='2018'}" value="2018">2018</option>
+                  <option th:selected="${business.year=='2017'}" value="2017">2017</option>
+                  <option th:selected="${business.year=='2016'}" value="2016">2016</option>
+                  <option th:selected="${business.year=='2015'}" value="2015">2015</option>
+                  <option th:selected="${business.year=='2014'}" value="2014">2014</option>
+                  <option th:selected="${business.year=='2013'}" value="2013">2013</option>
+                  <option th:selected="${business.year=='2012'}" value="2012">2012</option>
+                  <option th:selected="${business.year=='2011'}" value="2011">2011</option>
+                  <option th:selected="${business.year=='2010'}" value="2010">2010</option>
+                  <option th:selected="${business.year=='2009'}" value="2009">2009</option>
+                  <option th:selected="${business.year=='2008'}" value="2008">2008</option>
+                  <option th:selected="${business.year=='2007'}" value="2007">2007</option>
+                  <option th:selected="${business.year=='2006'}" value="2006">2006</option>
+                  <option th:selected="${business.year=='2005'}" value="2005">2005</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-auto my-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Content</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect02" th:field="${business.content}">
+                  <option selected value="">Choose...</option>
+                  <option th:selected="${business.content=='review'}" value="review">Total Reviews</option>
+                  <option th:selected="${business.content=='stars'}" value="stars">Average Stars</option>
+                </select>
+              </div>
+            </div>
+
+
+            <div class="col-auto my-1">
+              <button type="submit" class="btn btn-sm btn-outline-secondary">Submit</button>
+            </div>
+          </div>
+        </form>
+
+
+
+        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+      </main>
+    </div>
+  </div>
+
+
+
+  <script th:inline="javascript">
+    var dataLabel = /*[[${dataLabel}]]*/ [];
+    var dataVal = /*[[${dataVal}]]*/ [];
+  </script>
+  <script th:src="@{/js/dashboard.js}"></script>
+
+</body>
+
+</html>
