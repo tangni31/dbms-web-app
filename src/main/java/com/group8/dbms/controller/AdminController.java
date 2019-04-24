@@ -151,9 +151,7 @@ public class AdminController {
                 }
             }
         }
-        List<List> res = getResult(tmpRes);
-        System.out.println(res.get(0).toString());
-        System.out.println(res.get(1).toString());
+        List<List> res = getResult(tmpRes);     
         model.addAttribute("message", message);
         model.addAttribute("dataLabel", res.get(0));
         model.addAttribute("dataVal", res.get(1));
