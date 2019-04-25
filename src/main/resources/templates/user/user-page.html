@@ -7,6 +7,7 @@
   <!-- css -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" th:href="@{/css/user.css}">
+  <link href="/css/simplePagination.css" type="text/css" rel="stylesheet" />
 
   <!-- font awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -15,6 +16,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  <script src="/js/jquery.simplePagination.js"></script>
 
 </head>
 
@@ -76,16 +78,18 @@
 
     <div class="container">
       <h2>Friends</h2>
-      <ul class="user-line" th:each="f : ${friends}">
+      <ul id="friend-id" class="user-line" th:each="f : ${friends}">
         <li class="user-line">
           <a th:href="@{/user/(uid=${f.uid})}" class="btn btn-link link">
             <p class="other-name" th:text="${f.name}"></p>
           </a>
           <p><i class="fas fa-user-friends"></i><span th:text="' Friends: ' +  ${f.fans}" /></p>
           <p><i class="fas fa-star"></i><span th:text="' Reviews: ' + ${f.reviewCount}" /></p>
+          <hr>
         </li>
-        <hr>
       </ul>
+      <div id="pagination-friend">
+      </div>
     </div>
   </section>
 
@@ -94,22 +98,76 @@
 
     <div class="container">
       <h2>Reviews</h2>
-      <ul class="user-line" th:each="r : ${reviews}">
-        <a th:href="@{/business/(bid=${r.key.bid})}" class="btn btn-link link">
-          <p class="other-name" th:text="${r.key.name}"></p>
-        </a>
-        <p class="category" th:text="${r.key.category}"></p>
-        <p class="address" th:text="${r.key.address}"></p>
-        <p class="address" th:text="${r.key.city} + ', ' + ${r.key.state}"></p>
-        <p th:text="'Rate: ' + ${r.value.star}"></p>
-        <p th:text="${r.value.date}"></p>
-        <p th:text="${r.value.text}"></p>
-        <div class="row">
-          <p class="useful col-md-3" th:text="'useful:' + ${r.value.useful}"></p>
-          <p class="useful col-md-3" th:text="'funny:' + ${r.value.funny}"></p>
-          <p class="useful col-md-3" th:text="'cool:' + ${r.value.cool}"></p>
-        </div>
-        <hr>
+      <ul id="review-id" class="user-line" th:each="r : ${reviews}">
+        <li class="review-line">
+          <a th:href="@{/business/(bid=${r.key.bid})}" class="btn btn-link link">
+            <p class="other-name" th:text="${r.key.name}"></p>
+          </a>
+          <p class="category" th:text="${r.key.category}"></p>
+          <p class="address" th:text="${r.key.address}"></p>
+          <p class="address" th:text="${r.key.city} + ', ' + ${r.key.state}"></p>
+          <p th:text="'Rate: ' + ${r.value.star}"></p>
+          <p th:text="${r.value.date}"></p>
+          <p th:text="${r.value.text}"></p>
+          <div class="row">
+            <p class="useful col-md-3" th:text="'useful:' + ${r.value.useful}"></p>
+            <p class="useful col-md-3" th:text="'funny:' + ${r.value.funny}"></p>
+            <p class="useful col-md-3" th:text="'cool:' + ${r.value.cool}"></p>
+          </div>
+          <hr>
+        </li>
       </ul>
+
+      <div id="pagination"></div>
+
     </div>
   </section>
+
+
+  <script>
+    jQuery(function($) {
+      var items = $("#review-id li");
+      var numItems = items.length;
+      var perPage = 4;
+      items.slice(perPage).hide();
+      
+      $("#pagination").pagination({
+        items: numItems,
+        itemsOnPage: perPage,
+        cssStyle: "light-theme",
+        onPageClick: function(pageNumber) {
+          
+          var showFrom = perPage * (pageNumber - 1);
+          var showTo = showFrom + perPage;
+          
+          items.hide().slice(showFrom, showTo).show();
+        }
+      });
+    });
+  </script>
+
+  <script>
+    jQuery(function($) {
+      var items = $("#friend-id li");
+      var numItems = items.length;
+      var perPage = 5;
+      
+      items.slice(perPage).hide();
+     
+      $("#pagination-friend").pagination({
+        items: numItems,
+        itemsOnPage: perPage,
+        cssStyle: "light-theme",
+        
+        onPageClick: function(pageNumber) {
+          var showFrom = perPage * (pageNumber - 1);
+          var showTo = showFrom + perPage;
+          items.hide().slice(showFrom, showTo).show();
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>
