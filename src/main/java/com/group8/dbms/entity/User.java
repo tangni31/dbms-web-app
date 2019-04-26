@@ -1,14 +1,19 @@
 package com.group8.dbms.entity;
 
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "user_")
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class User {
 
     @Id
     @Column(name = "user_id")
+    @GeneratedValue(generator = "jpa-uuid")
     private String uid;
 
     @Column(name = "name")
@@ -23,8 +28,9 @@ public class User {
     @Column(name = "fans")
     private int fans;
 
-    @Column(name = "yelping_since")
-    private String registrationTime;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "yelping_since", updatable = false)
+    private Date registrationTime = new Date();
 
     @Column(name = "average_stars")
     private Double averageStars;
@@ -49,7 +55,7 @@ public class User {
     }
 
 
-    public User(String uid, String name, String password, int reviewCount, int fans, String registrationTime,
+    public User(String uid, String name, String password, int reviewCount, int fans, Date registrationTime,
                 Double averageStars, int useful, int funny, int cool) {
         this.uid = uid;
         this.name = name;
@@ -87,11 +93,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRegistrationTime() {
+    public Date getRegistrationTime() {
         return registrationTime;
     }
 
-    public void setRegistrationTime(String registrationTime) {
+    public void setRegistrationTime(Date registrationTime) {
         this.registrationTime = registrationTime;
     }
 
