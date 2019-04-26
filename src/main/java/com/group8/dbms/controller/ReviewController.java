@@ -56,14 +56,6 @@ public class ReviewController {
                              HttpSession session,
                              @ModelAttribute("review") Review review,
                              @RequestParam("bid") String bid) {
-        //generate and set rid
-        String rid;
-        do {
-            rid = Tool.generateRandomId(22);
-        } while (reviewService.findById(rid) != null);
-        review.setRid(rid);
-        //set date
-        review.setDate(Tool.getDate());
         //set uid
         User user = userService.getUserFromSession(session);
         //review.setUser(user);
