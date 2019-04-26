@@ -70,15 +70,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signUp(User user) {
-        //User user = new User();
-        //user.setName(message.getId());
-        user.setRegistrationTime(Tool.getDate());
-        //user.setPassword(message.getPassword());
-        String uid;
-        do {
-            uid = Tool.generateRandomId(22);
-        } while (findById(uid) != null);
-        user.setUid(uid);
         save(user);
         return user;
     }
