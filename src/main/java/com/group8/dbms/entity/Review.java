@@ -1,13 +1,18 @@
 package com.group8.dbms.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "yuanwang.review")
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class Review {
 
     @Id
     @Column(name = "review_id")
+    @GeneratedValue(generator = "jpa-uuid")
     private String rid;
 
     @Column(name = "user_id")
@@ -19,20 +24,21 @@ public class Review {
     @Column(name = "text")
     private String text;
 
-    @Column(name = "time")
-    private String date;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "time", updatable = false)
+    private Date date = new Date();
 
     @Column(name = "stars")
     private int star;
 
     @Column(name = "funny")
-    private int funny;
+    private int funny = 0;
 
     @Column(name = "cool")
-    private int cool;
+    private int cool = 0;
 
     @Column(name = "useful")
-    private int useful;
+    private int useful = 0;
 
 //    @ManyToOne(fetch = FetchType.LAZY,
 //            cascade = CascadeType.ALL)
@@ -48,7 +54,7 @@ public class Review {
 
     }
 
-    public Review(String rid, String uid, String bid, String text, String date, int star, int funny, int cool, int useful) {
+    public Review(String rid, String uid, String bid, String text, Date date, int star, int funny, int cool, int useful) {
         this.rid = rid;
         this.uid = uid;
         this.bid = bid;
@@ -92,11 +98,11 @@ public class Review {
         this.text = text;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
